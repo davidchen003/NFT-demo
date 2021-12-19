@@ -158,3 +158,63 @@
   - `./metadata/rinkeby/0-ST_BERNARD.json` is also save
 
 **Commit 6**
+
+**refactor to not re-upload to IPFS**
+
+- add `export UPLOAD_IPFS = false` to .env
+- add `breed_to_image_uri` dictionary in create_matadata.py
+
+## setTokenURI()
+
+- `scripts/advanced_collectible/set_tokenuri.py`
+
+## Test
+
+- run unit test `$brownie test`
+- run scripts manually one by one (make sure MetaMask is open, on Rinkeby, have some ETH and LINK)
+
+  - `$ brownie run scripts/advanced_collectible/deploy_and_create.py --network rinkeby`
+    - 0xfc321692F8D934edC21450B30930C0Be93D6D743
+    - use it on rinkeby etherscan to find detailed info, and interact with the contract (Contract -> Read Contract)
+  - `$brownie run scripts/advanced_collectible/create_metadata.py --network rinkeby`
+    - ./metadata/rinkeby/0-ST_BERNARD.json already exists! Delete it to overwrite
+  - so let's run `$brownie run scripts/advanced_collectible/create_collectible.py --network rinkeby`
+  - then run again `$brownie run scripts/advanced_collectible/create_metadata.py --network rinkeby`
+
+- paste the above contract address at [testnet OpenSea](https://testnets.opensea.io/), you'll find items (not yet!?, but following individual url show item, w/o images) there, but w/o images, so
+- `brownie run scripts/advanced_collectible/set_tokenuri.py --network rinkeby`
+  - now the images should be there (only two out of the three individual urls, nothing showed up by contract #)
+
+---
+
+Working on rinkeby
+You have 3 tokenIds
+Setting tokenURI of 0
+Transaction sent: 0x96ac5e561277ee6f4dc1d8035121353137881997c6da3a56510039c4e1cefe98
+Gas price: 1.000000008 gwei Gas limit: 132306 Nonce: 101
+AdvancedCollectible.setTokenURI confirmed Block: 9843710 Gas used: 120279 (90.91%)
+
+AdvancedCollectible.setTokenURI confirmed Block: 9843710 Gas used: 120279 (90.91%)
+
+Awesome! You can view your NFT at https://testnets.opensea.io/assets/0xfc321692F8D934edC21450B30930C0Be93D6D743/0
+Please wait up to 20 minutes, and hit the refresh metadata button
+Setting tokenURI of 1
+Transaction sent: 0x54ee8919fc2bd6380bbac87929a323b23044efb596ba3c29e263c692f1ee89ab
+Gas price: 1.000000008 gwei Gas limit: 132306 Nonce: 102
+AdvancedCollectible.setTokenURI confirmed Block: 9843711 Gas used: 120279 (90.91%)
+
+AdvancedCollectible.setTokenURI confirmed Block: 9843711 Gas used: 120279 (90.91%)
+
+Awesome! You can view your NFT at https://testnets.opensea.io/assets/0xfc321692F8D934edC21450B30930C0Be93D6D743/1
+Please wait up to 20 minutes, and hit the refresh metadata button
+Setting tokenURI of 2
+Transaction sent: 0x67590c5c52f1a5735cdf8ab7df5e657cb6062cdd00e7ec61390218d5ad03f6f8
+Gas price: 1.000000008 gwei Gas limit: 132227 Nonce: 103
+AdvancedCollectible.setTokenURI confirmed Block: 9843712 Gas used: 120207 (90.91%)
+
+AdvancedCollectible.setTokenURI confirmed Block: 9843712 Gas used: 120207 (90.91%)
+
+Awesome! You can view your NFT at https://testnets.opensea.io/assets/0xfc321692F8D934edC21450B30930C0Be93D6D743/2
+Please wait up to 20 minutes, and hit the refresh metadata button
+
+**Commi 7**
