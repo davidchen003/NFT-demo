@@ -75,3 +75,27 @@
   - we can see the record as rinkeby etherscan by 0xA29f528880c8250659b6cFC7D95E200A47879897
 
 **Commit 2**
+
+## create_collectible.py
+
+- `scripts/advanced_collectible/create_collectible.py`
+- `brownie run scripts/advanced_collectible/create_collectible.py --network rinkeby`
+
+- to (flatten and) publish code
+
+  - add a line in our .env file `export ETHERSCAN_TOKEN=my etherscan.io API Key`
+  - modify deploy_fund_me(), `fund_me=FundMe.deploy({'from':account}, publish_source=True)`
+  - add `verify: true` to Rinkeby in brownie-config
+
+- deploy contract and run create_collectible again
+  - `scripts/advanced_collectible/create_collectible.py`
+  - `brownie run scripts/advanced_collectible/create_collectible.py --network rinkeby`
+  - use address 0xaab25a0520e9622B3040f538Fa3182B6956e8c9E, to see the transaction, source code, and interact with contract/functions (Rinkeby etherscan -> Contract -> Read Contract), e.g. (be aware it may take a while for the transaction to go through)
+    - tokenCounter, will see it increased from 1 to 2)
+    - tokenToBreed, will see token id 0 has breed index 1, token id 1 has breed index 0
+
+**Commit 3**
+
+## Integration test
+
+- `/tests/integration/test_advanced_collectible_integration.py`
