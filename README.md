@@ -4,6 +4,10 @@
 
 [ERC-721 NFT Standard](https://eips.ethereum.org/EIPS/eip-721)
 
+[How to Make an NFT and Render it on the OpenSea Marketplace](https://www.freecodecamp.org/news/how-to-make-an-nft-and-render-on-opensea-marketplace/)
+
+[Dungeons and Dragons Example](https://github.com/PatrickAlphaC/dungeons-and-dragons-nft), done in **truffle** (instead of brownie)
+
 - NFT: hybrid smart contract:
   - have off-chain component interaction with random numbers, and
   - restoring their meta data with **IPFS**
@@ -32,3 +36,42 @@
   - Awesome, you can view your NFT at https://testnets.opensea.io/assets/0x151EE60035f1cdC2Fa8f39535A8536a894FD6902/0
 
 **Commit 1**
+
+## Unit test
+
+- `tests/unit/test_simple_collectible.py`
+- `$brownie test`
+
+- What we didn't do:
+  - didn't upload an image to IPFS ourselves
+  - why is IPFS decentralized?
+  - Anyone can min an NFT - no verifiably scarce or random
+
+## AdvancedCollectible.sol
+
+- Where the tokenURI can be one of 3 different dogs, randomly selected
+- `contracts/AdvancedCollectible.sol`
+- `import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";` for random number
+  - add corresponding dependencies and compiler info in `brownie-config.yaml`
+- `contract AdvancedCollectible is ERC721, VRFConsumerBase {`
+- best practice: to emit events when you update mappings
+- `brownie compile` to make sure no errors in the contract
+
+## deploy_and_create.py
+
+- `scripts/advanced_collectible/deploy_and_create.py`
+- add Rinkeby network info `vrf_coordinator, link_token, keyhash` in brownie-confi from [chainlink VRF] (https://docs.chain.link/docs/vrf-contracts/)
+- add `get_contract` (same as brownie_lottery project) to `helpful_scripts.py`. It is smart enough to determine wether we need to deploy a mock or just grab from an actual contract.
+- `deploy_mocks()`, add `contract_to_mock` map
+- `fund_with_link`
+
+- !!!
+  - **don't forget to add `/contracts/test/LinkToken.sol and VRFCoordinatorMock.sol`** (same as brownie_lottery project). Otherwise, runtime error, for `from brownie import VRFCoordinatorMock, LinkToken` in helpful_sxripts.py
+    - `ImportError: cannot import name 'VRFCoordinatorMock' from 'brownie' (/home/david/.local/lib/python3.8/site-packages/brownie/__init__.py)`, or `ImportError: cannot import name 'VRFCoordinatorMock' from 'brownie' (/home/david/.local/lib/python3.8/site-packages/brownie/__init__.py)` if LinkToken listed ahead of VRFCoordinatorMock
+- !!!
+
+- `brownie run scripts/advanced_collectible/deploy_and_create.py`
+- `brownie run scripts/advanced_collectible/deploy_and_create.py --network rinkeby`
+  - we can see the record as rinkeby etherscan by 0xA29f528880c8250659b6cFC7D95E200A47879897
+
+**Commit 2**
