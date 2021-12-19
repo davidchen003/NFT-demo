@@ -140,3 +140,10 @@
   - https://ipfs.io/ipfs/QmUPjADFGEKmfohdTaNcWhp7VGk26h5jXDA7v3VtTnTLcW?filename=st-bernard.png
 
 **Commit 4**
+
+## Pinata (an alternative to IPFS)
+
+- `scripts/upload_to_pinata.py`
+- sign up at Pinata, create API key, and enter PINATA_API_KEY and PINATA_API_SECRET in `.env`
+- `$brownie run scripts/upload_to_pinata.py`
+  - we can see from our [pinata](https://app.pinata.cloud/pinmanager), the image is uploaded there.
