@@ -26,6 +26,12 @@ def main():
         collectible_metadata["description"] = f"An adorable {breed} pup!"
         image_path = "./img/" + breed.lower().replace("_", "-") + ".png"
         image_uri = upload_to_ipfs(image_path)
+        collectible_metadata["image"] = image_uri
+        with open(metadata_file_name, "w") as file:
+            json.dump(
+                collectible_metadata, file
+            )  # save the dictionary collectible_metadata as JSON to metadata_file_name
+        upload_to_ipfs(metadata_file_name)
 
 
 # for testing:

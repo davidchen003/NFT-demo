@@ -147,3 +147,14 @@
 - sign up at Pinata, create API key, and enter PINATA_API_KEY and PINATA_API_SECRET in `.env`
 - `$brownie run scripts/upload_to_pinata.py`
   - we can see from our [pinata](https://app.pinata.cloud/pinmanager), the image is uploaded there.
+- so now, if you want, you can use Pinata's image uri instead of using `upload_to_ipfs()` to get it
+
+**Commit 5**
+
+- upload JSON metadata file to IPFS also
+  - `$brownie run scripts/advanced_collectible/create_metadata.py --network rinkeby` (make sure ipfs daemon is still running in another terminal)
+    - https://ipfs.io/ipfs/QmUPjADFGEKmfohdTaNcWhp7VGk26h5jXDA7v3VtTnTLcW?filename=st-bernard.png
+    - https://ipfs.io/ipfs/QmW4qPbedTL7DS3AgdzMnrw7YKYZB2miLAywJBNZe97kTz?filename=0-ST_BERNARD.json
+  - `./metadata/rinkeby/0-ST_BERNARD.json` is also save
+
+**Commit 6**
