@@ -88,7 +88,7 @@
   - add `verify: true` to Rinkeby in brownie-config
 
 - deploy contract and run create_collectible again
-  - `scripts/advanced_collectible/create_collectible.py`
+  - `brownie run scripts/advanced_collectible/deploy_and_create.py --network rinkeby`
   - `brownie run scripts/advanced_collectible/create_collectible.py --network rinkeby`
   - use address 0xaab25a0520e9622B3040f538Fa3182B6956e8c9E, to see the transaction, source code, and interact with contract/functions (Rinkeby etherscan -> Contract -> Read Contract), e.g. (be aware it may take a while for the transaction to go through)
     - tokenCounter, will see it increased from 1 to 2)
@@ -96,6 +96,47 @@
 
 **Commit 3**
 
-## Integration test
+## Unit / Integration tests
 
-- `/tests/integration/test_advanced_collectible_integration.py`
+**Unit test**
+
+- `tests/unit/test_advanced_collectible.py`
+- add `creating_tx` in `return advanced_collectible, creating_tx` of deploy_and_create()
+- remove `publish_source=True` from deploy_and_create(), or better
+- change it to `publish_source=config["networks"][network.show_active()].get("verify")`
+- `$brownie test -k test_can_create_advanced_collectible`
+
+**Integration test**
+
+- `tests/integration/test_advanced_collectible_integration.py`
+- the differences are:
+  - we are not going to be the one who calls back with a random #
+  - we don't need requestId either since the chainlink node is going to be responding
+  - and we need to wait for the transaction to get call back
+- `$brownie test -k test_advanced_collectible_integration.py --network rinkeby` (failed!)
+
+## Creating Metadata & IPFS
+
+- don't host metadata on a centralized server
+- [FileCoin](https://filecoin.io/) - further improvement over IPFS. IPFS is going to be able to hook up to FileCoin in future. It's a good enough solution for us now.
+
+- `scripts/advanced_collectible/create_metadata.py`
+- `metadata/sample_metadata.py`
+- `metadata/rinkeby/` to save the metadata for rinkeby
+- `upload_to_ipfs(filepath):`
+
+**uploading to IPFS**
+
+- [IFPF download commandline](https://docs.ipfs.io/install/command-line/#system-requirements)
+- there is also a [desktop version](https://docs.ipfs.io/install/ipfs-desktop/) for manual operations
+- [IPFS HTTP API](https://docs.ipfs.io/reference/http/api/#getting-started)
+  - [/api/v0/add](https://docs.ipfs.io/reference/http/api/#api-v0-add) for add file/directory to IPFS
+- we'll upload the images to our own IPFS node, which we can run it by:
+  - `$ipfs init`, then `$ipfs daemon`, which shows
+    - WebUI: http://127.0.0.1:5001/webui
+- **keep the node running**, open another terminal to continue
+
+- `$brownie run scripts/advanced_collectible/create_metadata.py --network rinkeby`, will see our image is uploaded to:
+  - https://ipfs.io/ipfs/QmUPjADFGEKmfohdTaNcWhp7VGk26h5jXDA7v3VtTnTLcW?filename=st-bernard.png
+
+**Commit 4**

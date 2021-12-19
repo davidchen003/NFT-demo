@@ -76,3 +76,7 @@ def fund_with_link(
     funding_tx.wait(1)
     print(f"Funded {contract_address}")
     return funding_tx
+
+
+def get_breed(breed_number):
+    return BREED_MAPPING[breed_number]
